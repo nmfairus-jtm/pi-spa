@@ -1,0 +1,30 @@
+@baseUrl = http://localhost:3000/api/auth
+
+GET  {{baseUrl}}/get-session
+
+### Sign up
+POST {{baseUrl}}/sign-up/email
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "password",
+  "name": "Admin User"
+}
+
+### Sign in
+POST {{baseUrl}}/sign-in/email
+Origin: http://localhost:3000
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "password"
+}
+
+### Sign out
+POST {{baseUrl}}/sign-out
+Origin: http://localhost:3000
+Content-Type: application/json
+
+{}
