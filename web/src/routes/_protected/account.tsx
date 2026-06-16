@@ -227,14 +227,14 @@ function AccountPage() {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="profile">
-                <TabsList variant="line" className="w-full gap-1">
-                  <TabsTrigger value="profile" className="flex-1"><UserIcon /> Profile</TabsTrigger>
-                  <TabsTrigger value="password" className="flex-1"><LockIcon /> Password</TabsTrigger>
-                  <TabsTrigger value="two-factor" className="flex-1"><ShieldIcon /> Two-Factor</TabsTrigger>
-                  <TabsTrigger value="sessions" className="flex-1"><MonitorIcon /> Sessions</TabsTrigger>
-                  <TabsTrigger value="passkeys" className="flex-1"><KeyIcon /> Passkeys</TabsTrigger>
-                  <TabsTrigger value="linking" className="flex-1"><LinkIcon /> Account Linking</TabsTrigger>
-                  <TabsTrigger value="delete" className="flex-1"><Trash2Icon /> Delete</TabsTrigger>
+                <TabsList variant="line" className="w-full gap-1 overflow-x-auto md:overflow-visible">
+                  <TabsTrigger value="profile" className="shrink-0 whitespace-nowrap md:flex-1"><UserIcon /> Profile</TabsTrigger>
+                  <TabsTrigger value="password" className="shrink-0 whitespace-nowrap md:flex-1"><LockIcon /> Password</TabsTrigger>
+                  <TabsTrigger value="two-factor" className="shrink-0 whitespace-nowrap md:flex-1"><ShieldIcon /> Two-Factor</TabsTrigger>
+                  <TabsTrigger value="sessions" className="shrink-0 whitespace-nowrap md:flex-1"><MonitorIcon /> Sessions</TabsTrigger>
+                  <TabsTrigger value="passkeys" className="shrink-0 whitespace-nowrap md:flex-1"><KeyIcon /> Passkeys</TabsTrigger>
+                  <TabsTrigger value="linking" className="shrink-0 whitespace-nowrap md:flex-1"><LinkIcon /> Account Linking</TabsTrigger>
+                  <TabsTrigger value="delete" className="shrink-0 whitespace-nowrap md:flex-1"><Trash2Icon /> Delete</TabsTrigger>
                 </TabsList>
                 <TabsContent value="profile" className="space-y-6 pt-4">
                   <div className="flex items-center gap-4">
@@ -284,6 +284,17 @@ function AccountPage() {
                   </div>
                 </TabsContent>
                 <TabsContent value="password" className="space-y-6 pt-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                      <LockIcon className="h-6 w-6 text-muted-foreground" />
+                    </div>
+                    <div>
+                      <p className="text-lg font-medium">Change Password</p>
+                      <p className="text-sm text-muted-foreground">
+                        Update your password to keep your account secure.
+                      </p>
+                    </div>
+                  </div>
                   <div className="space-y-4">
                     <Field>
                       <FieldLabel>Current Password</FieldLabel>
@@ -324,7 +335,7 @@ function AccountPage() {
                   </div>
                 </TabsContent>
                 <TabsContent value="two-factor" className="space-y-6 pt-4">
-                  <div className="flex flex-col items-center gap-4 py-16 text-center">
+                  <div className="flex flex-col items-center gap-4 py-8 md:py-16 text-center">
                     <ShieldIcon className="h-12 w-12 text-muted-foreground" />
                     <div>
                       <h3 className="text-lg font-medium">Two-Factor Authentication</h3>
@@ -336,7 +347,7 @@ function AccountPage() {
                   </div>
                 </TabsContent>
                 <TabsContent value="sessions" className="space-y-6 pt-4">
-                  <div className="flex flex-col items-center gap-4 py-16 text-center">
+                  <div className="flex flex-col items-center gap-4 py-8 md:py-16 text-center">
                     <MonitorIcon className="h-12 w-12 text-muted-foreground" />
                     <div>
                       <h3 className="text-lg font-medium">Active Sessions</h3>
@@ -348,7 +359,7 @@ function AccountPage() {
                   </div>
                 </TabsContent>
                 <TabsContent value="passkeys" className="space-y-6 pt-4">
-                  <div className="flex flex-col items-center gap-4 py-16 text-center">
+                  <div className="flex flex-col items-center gap-4 py-8 md:py-16 text-center">
                     <KeyIcon className="h-12 w-12 text-muted-foreground" />
                     <div>
                       <h3 className="text-lg font-medium">Passkeys</h3>
@@ -360,7 +371,7 @@ function AccountPage() {
                   </div>
                 </TabsContent>
                 <TabsContent value="linking" className="space-y-6 pt-4">
-                  <div className="flex flex-col items-center gap-4 py-16 text-center">
+                  <div className="flex flex-col items-center gap-4 py-8 md:py-16 text-center">
                     <LinkIcon className="h-12 w-12 text-muted-foreground" />
                     <div>
                       <h3 className="text-lg font-medium">Account Linking</h3>
@@ -372,7 +383,7 @@ function AccountPage() {
                   </div>
                 </TabsContent>
                 <TabsContent value="delete" className="space-y-6 pt-4">
-                  <div className="flex flex-col items-center gap-4 py-16 text-center">
+                  <div className="flex flex-col items-center gap-4 py-8 md:py-16 text-center">
                     <Trash2Icon className="h-12 w-12 text-destructive" />
                     <div>
                       <h3 className="text-lg font-medium">Delete Account</h3>
