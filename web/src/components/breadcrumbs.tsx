@@ -11,6 +11,7 @@ import {
 const labels: Record<string, string> = {
   '/': 'Home',
   '/_protected/dashboard': 'Dashboard',
+  '/_protected/account': 'Account',
 }
 
 export function Breadcrumbs() {
