@@ -17,8 +17,8 @@ function Home() {
   if (isPending) return null
 
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center p-8">
-      <h1 className="text-4xl font-bold display-title">Pi SPA</h1>
+    <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-8">
+      <h1 className="text-4xl font-bold">Pi SPA</h1>
       <p className="mt-4 text-lg text-muted-foreground max-w-md text-center">
         A modern single-page application built with TanStack Router and Better Auth.
       </p>
