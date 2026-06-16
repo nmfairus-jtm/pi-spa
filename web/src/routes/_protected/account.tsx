@@ -227,7 +227,7 @@ function AccountPage() {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="profile">
-                <TabsList variant="line" className="w-full">
+                <TabsList variant="line" className="w-full gap-1">
                   <TabsTrigger value="profile" className="flex-1"><UserIcon /> Profile</TabsTrigger>
                   <TabsTrigger value="password" className="flex-1"><LockIcon /> Password</TabsTrigger>
                   <TabsTrigger value="two-factor" className="flex-1"><ShieldIcon /> Two-Factor</TabsTrigger>
@@ -236,7 +236,7 @@ function AccountPage() {
                   <TabsTrigger value="linking" className="flex-1"><LinkIcon /> Account Linking</TabsTrigger>
                   <TabsTrigger value="delete" className="flex-1"><Trash2Icon /> Delete</TabsTrigger>
                 </TabsList>
-                <TabsContent value="profile" className="space-y-6">
+                <TabsContent value="profile" className="space-y-6 pt-4">
                   <div className="flex items-center gap-4">
                     <Avatar className="h-16 w-16">
                       <AvatarImage src={avatarUrl || undefined} />
@@ -283,7 +283,7 @@ function AccountPage() {
                     </Button>
                   </div>
                 </TabsContent>
-                <TabsContent value="password" className="space-y-6">
+                <TabsContent value="password" className="space-y-6 pt-4">
                   <div className="space-y-4">
                     <Field>
                       <FieldLabel>Current Password</FieldLabel>
@@ -323,8 +323,8 @@ function AccountPage() {
                     </Button>
                   </div>
                 </TabsContent>
-                <TabsContent value="two-factor" className="space-y-6">
-                  <div className="flex flex-col items-center gap-4 py-8 text-center">
+                <TabsContent value="two-factor" className="space-y-6 pt-4">
+                  <div className="flex flex-col items-center gap-4 py-16 text-center">
                     <ShieldIcon className="h-12 w-12 text-muted-foreground" />
                     <div>
                       <h3 className="text-lg font-medium">Two-Factor Authentication</h3>
@@ -335,8 +335,8 @@ function AccountPage() {
                     <Button disabled>Enable Two-Factor</Button>
                   </div>
                 </TabsContent>
-                <TabsContent value="sessions" className="space-y-6">
-                  <div className="flex flex-col items-center gap-4 py-8 text-center">
+                <TabsContent value="sessions" className="space-y-6 pt-4">
+                  <div className="flex flex-col items-center gap-4 py-16 text-center">
                     <MonitorIcon className="h-12 w-12 text-muted-foreground" />
                     <div>
                       <h3 className="text-lg font-medium">Active Sessions</h3>
@@ -347,8 +347,8 @@ function AccountPage() {
                     <Button disabled>Manage Sessions</Button>
                   </div>
                 </TabsContent>
-                <TabsContent value="passkeys" className="space-y-6">
-                  <div className="flex flex-col items-center gap-4 py-8 text-center">
+                <TabsContent value="passkeys" className="space-y-6 pt-4">
+                  <div className="flex flex-col items-center gap-4 py-16 text-center">
                     <KeyIcon className="h-12 w-12 text-muted-foreground" />
                     <div>
                       <h3 className="text-lg font-medium">Passkeys</h3>
@@ -359,8 +359,8 @@ function AccountPage() {
                     <Button disabled>Add Passkey</Button>
                   </div>
                 </TabsContent>
-                <TabsContent value="linking" className="space-y-6">
-                  <div className="flex flex-col items-center gap-4 py-8 text-center">
+                <TabsContent value="linking" className="space-y-6 pt-4">
+                  <div className="flex flex-col items-center gap-4 py-16 text-center">
                     <LinkIcon className="h-12 w-12 text-muted-foreground" />
                     <div>
                       <h3 className="text-lg font-medium">Account Linking</h3>
@@ -371,8 +371,8 @@ function AccountPage() {
                     <Button disabled>Link Account</Button>
                   </div>
                 </TabsContent>
-                <TabsContent value="delete" className="space-y-6">
-                  <div className="flex flex-col items-center gap-4 py-8 text-center">
+                <TabsContent value="delete" className="space-y-6 pt-4">
+                  <div className="flex flex-col items-center gap-4 py-16 text-center">
                     <Trash2Icon className="h-12 w-12 text-destructive" />
                     <div>
                       <h3 className="text-lg font-medium">Delete Account</h3>
