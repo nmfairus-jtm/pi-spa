@@ -17,6 +17,7 @@ import {
 } from '#/components/ui/field.tsx'
 import { Input } from '#/components/ui/input.tsx'
 import { authClient } from '#/lib/auth-client'
+import { toast } from 'sonner'
 
 export function SignupForm({
   className,
@@ -27,15 +28,13 @@ export function SignupForm({
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError('')
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match')
+      toast.error('Passwords do not match')
       return
     }
 
@@ -50,7 +49,7 @@ export function SignupForm({
     setLoading(false)
 
     if (err) {
-      setError(err.message || 'Failed to create account')
+      toast.error(err.message || 'Failed to create account')
       return
     }
 
@@ -120,9 +119,6 @@ export function SignupForm({
                   Must be at least 8 characters long.
                 </FieldDescription>
               </Field>
-              {error && (
-                <p className="text-sm text-destructive">{error}</p>
-              )}
               <Field>
                 <Button type="submit" disabled={loading}>
                   {loading ? 'Creating account...' : 'Create Account'}

@@ -18,6 +18,7 @@ import {
 } from '#/components/ui/field.tsx'
 import { Input } from '#/components/ui/input.tsx'
 import { authClient } from '#/lib/auth-client'
+import { toast } from 'sonner'
 
 export function LoginForm({
   className,
@@ -26,12 +27,10 @@ export function LoginForm({
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError('')
     setLoading(true)
 
     const { error: err } = await authClient.signIn.email({
@@ -42,7 +41,7 @@ export function LoginForm({
     setLoading(false)
 
     if (err) {
-      setError(err.message || 'Failed to sign in')
+      toast.error(err.message || 'Failed to sign in')
       return
     }
 
@@ -84,9 +83,6 @@ export function LoginForm({
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </Field>
-              {error && (
-                <p className="text-sm text-destructive">{error}</p>
-              )}
               <Field>
                 <Button type="submit" disabled={loading}>
                   {loading ? 'Signing in...' : 'Sign in'}

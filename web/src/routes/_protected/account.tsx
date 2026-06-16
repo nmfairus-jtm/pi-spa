@@ -25,6 +25,29 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { toast } from 'sonner'
+import {
+  UserIcon,
+  LockIcon,
+  ShieldIcon,
+  MonitorIcon,
+  KeyIcon,
+  LinkIcon,
+  Trash2Icon,
+  CopyIcon,
+  CheckIcon,
+  CalendarDaysIcon,
+  MailIcon,
+  FingerprintIcon,
+  MailPlusIcon,
+  Loader2Icon,
+} from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 export const Route = createFileRoute('/_protected/account')({
   component: AccountPage,
@@ -42,8 +65,16 @@ function AccountPage() {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [changingPassword, setChangingPassword] = useState(false)
+  const [copiedId, setCopiedId] = useState(false)
+  const [sendingVerification, setSendingVerification] = useState(false)
 
   if (!user) return null
+
+  const copyId = () => {
+    navigator.clipboard.writeText(user.id)
+    setCopiedId(true)
+    setTimeout(() => setCopiedId(false), 2000)
+  }
 
   const initials = user.name
     ?.split(' ')
@@ -88,6 +119,20 @@ function AccountPage() {
     setChangingPassword(false)
   }
 
+  const handleSendVerification = async () => {
+    setSendingVerification(true)
+    const { error } = await authClient.sendVerificationEmail({
+      email: user.email,
+      callbackURL: '/account',
+    })
+    if (error) {
+      toast.error(error.message || 'Failed to send verification email')
+    } else {
+      toast.success('Verification email sent.')
+    }
+    setSendingVerification(false)
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -101,9 +146,80 @@ function AccountPage() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <Card className="aspect-video" />
-            <Card className="aspect-video" />
-            <Card className="aspect-video" />
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-medium">
+                  <CalendarDaysIcon className="size-4" />
+                  Member Since
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold">
+                  {new Date(user.createdAt).toLocaleDateString()}
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-medium">
+                  <MailIcon className="size-4" />
+                  Email
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm truncate">{user.email}</p>
+                <div className="mt-1 flex items-center gap-2">
+                  <Badge variant={user.emailVerified ? 'default' : 'secondary'}>
+                    {user.emailVerified ? 'Verified' : 'Not verified'}
+                  </Badge>
+                  {!user.emailVerified && (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="size-6"
+                            disabled={sendingVerification}
+                            onClick={handleSendVerification}
+                          >
+                            {sendingVerification ? (
+                              <Loader2Icon className="size-3 animate-spin" />
+                            ) : (
+                              <MailPlusIcon className="size-3" />
+                            )}
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Send verification email</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-medium">
+                  <FingerprintIcon className="size-4" />
+                  Account ID
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-2">
+                  <p className="flex-1 truncate text-xs font-mono text-muted-foreground">
+                    {user.id}
+                  </p>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-6"
+                    onClick={copyId}
+                  >
+                    {copiedId ? <CheckIcon className="size-3" /> : <CopyIcon className="size-3" />}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
           <Card className="flex-1 rounded-xl">
             <CardHeader>
@@ -111,9 +227,14 @@ function AccountPage() {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="profile">
-                <TabsList>
-                  <TabsTrigger value="profile">Profile</TabsTrigger>
-                  <TabsTrigger value="password">Password</TabsTrigger>
+                <TabsList variant="line" className="w-full">
+                  <TabsTrigger value="profile" className="flex-1"><UserIcon /> Profile</TabsTrigger>
+                  <TabsTrigger value="password" className="flex-1"><LockIcon /> Password</TabsTrigger>
+                  <TabsTrigger value="two-factor" className="flex-1"><ShieldIcon /> Two-Factor</TabsTrigger>
+                  <TabsTrigger value="sessions" className="flex-1"><MonitorIcon /> Sessions</TabsTrigger>
+                  <TabsTrigger value="passkeys" className="flex-1"><KeyIcon /> Passkeys</TabsTrigger>
+                  <TabsTrigger value="linking" className="flex-1"><LinkIcon /> Account Linking</TabsTrigger>
+                  <TabsTrigger value="delete" className="flex-1"><Trash2Icon /> Delete</TabsTrigger>
                 </TabsList>
                 <TabsContent value="profile" className="space-y-6">
                   <div className="flex items-center gap-4">
@@ -200,6 +321,66 @@ function AccountPage() {
                     >
                       {changingPassword ? 'Changing...' : 'Change Password'}
                     </Button>
+                  </div>
+                </TabsContent>
+                <TabsContent value="two-factor" className="space-y-6">
+                  <div className="flex flex-col items-center gap-4 py-8 text-center">
+                    <ShieldIcon className="h-12 w-12 text-muted-foreground" />
+                    <div>
+                      <h3 className="text-lg font-medium">Two-Factor Authentication</h3>
+                      <p className="mt-1 text-sm text-muted-foreground max-w-md">
+                        Add an extra layer of security to your account by enabling two-factor authentication.
+                      </p>
+                    </div>
+                    <Button disabled>Enable Two-Factor</Button>
+                  </div>
+                </TabsContent>
+                <TabsContent value="sessions" className="space-y-6">
+                  <div className="flex flex-col items-center gap-4 py-8 text-center">
+                    <MonitorIcon className="h-12 w-12 text-muted-foreground" />
+                    <div>
+                      <h3 className="text-lg font-medium">Active Sessions</h3>
+                      <p className="mt-1 text-sm text-muted-foreground max-w-md">
+                        Manage your active sessions and sign out of other devices.
+                      </p>
+                    </div>
+                    <Button disabled>Manage Sessions</Button>
+                  </div>
+                </TabsContent>
+                <TabsContent value="passkeys" className="space-y-6">
+                  <div className="flex flex-col items-center gap-4 py-8 text-center">
+                    <KeyIcon className="h-12 w-12 text-muted-foreground" />
+                    <div>
+                      <h3 className="text-lg font-medium">Passkeys</h3>
+                      <p className="mt-1 text-sm text-muted-foreground max-w-md">
+                        Use passkeys for a passwordless and secure sign-in experience.
+                      </p>
+                    </div>
+                    <Button disabled>Add Passkey</Button>
+                  </div>
+                </TabsContent>
+                <TabsContent value="linking" className="space-y-6">
+                  <div className="flex flex-col items-center gap-4 py-8 text-center">
+                    <LinkIcon className="h-12 w-12 text-muted-foreground" />
+                    <div>
+                      <h3 className="text-lg font-medium">Account Linking</h3>
+                      <p className="mt-1 text-sm text-muted-foreground max-w-md">
+                        Link your social accounts for quick sign-in without a password.
+                      </p>
+                    </div>
+                    <Button disabled>Link Account</Button>
+                  </div>
+                </TabsContent>
+                <TabsContent value="delete" className="space-y-6">
+                  <div className="flex flex-col items-center gap-4 py-8 text-center">
+                    <Trash2Icon className="h-12 w-12 text-destructive" />
+                    <div>
+                      <h3 className="text-lg font-medium">Delete Account</h3>
+                      <p className="mt-1 text-sm text-muted-foreground max-w-md">
+                        Permanently delete your account and all associated data. This action cannot be undone.
+                      </p>
+                    </div>
+                    <Button variant="destructive" disabled>Delete Account</Button>
                   </div>
                 </TabsContent>
               </Tabs>
