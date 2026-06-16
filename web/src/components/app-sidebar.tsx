@@ -6,16 +6,12 @@ import {
   BookOpen,
   Bot,
   Command,
-  Frame,
   GalleryVerticalEnd,
-  Map,
-  PieChart,
   Settings2,
   SquareTerminal,
 } from "lucide-react"
 
 import { NavMain } from "#/components/nav-main.tsx"
-import { NavProjects } from "#/components/nav-projects.tsx"
 import { NavUser } from "#/components/nav-user.tsx"
 import { TeamSwitcher } from "#/components/team-switcher.tsx"
 import {
@@ -25,14 +21,9 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "#/components/ui/sidebar.tsx"
+import { authClient } from "#/lib/auth-client"
 
-// This is sample data.
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   teams: [
     {
       name: "Acme Inc",
@@ -137,26 +128,19 @@ const data = {
       ],
     },
   ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: session } = authClient.useSession()
+
+  const user = session?.user
+    ? {
+        name: session.user.name || 'User',
+        email: session.user.email || '',
+        avatar: session.user.image || '',
+      }
+    : { name: 'User', email: '', avatar: '' }
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -164,10 +148,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
