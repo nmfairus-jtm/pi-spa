@@ -2,6 +2,9 @@
 
 GET  {{baseUrl}}/get-session
 
+### Get session
+GET http://localhost:3000/session
+
 ### Sign up
 POST {{baseUrl}}/sign-up/email
 Content-Type: application/json
